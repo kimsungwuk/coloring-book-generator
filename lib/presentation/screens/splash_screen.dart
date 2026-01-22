@@ -84,9 +84,11 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> _syncImages() async {
+    debugPrint('[Splash] Starting image sync...');
     try {
       // 동기화 필요 여부 확인
       final needsSync = await _repository.needsSync();
+      debugPrint('[Splash] needsSync: $needsSync');
       
       if (needsSync) {
         setState(() {
@@ -94,8 +96,10 @@ class _SplashScreenState extends State<SplashScreen>
           _statusText = 'Checking for new images...';
         });
 
+        debugPrint('[Splash] Calling syncImages...');
         final (downloaded, total) = await _repository.syncImages(
           onProgress: (current, totalPages) {
+            debugPrint('[Splash] Sync progress: $current/$totalPages');
             if (mounted) {
               setState(() {
                 _statusText = 'Syncing images ($current/$totalPages)';
@@ -104,6 +108,8 @@ class _SplashScreenState extends State<SplashScreen>
           },
         );
 
+        debugPrint('[Splash] Sync completed: downloaded=$downloaded, total=$total');
+        
         if (mounted) {
           if (downloaded > 0) {
             setState(() {
@@ -115,9 +121,11 @@ class _SplashScreenState extends State<SplashScreen>
             });
           }
         }
+      } else {
+        debugPrint('[Splash] Sync not needed, skipping');
       }
     } catch (e) {
-      debugPrint('Sync error: $e');
+      debugPrint('[Splash] Sync error: $e');
       if (mounted) {
         setState(() {
           _statusText = 'Offline mode';

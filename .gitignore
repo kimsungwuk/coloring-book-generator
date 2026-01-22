@@ -4,6 +4,12 @@
 *.pyc
 *.swp
 .DS_Store
+
+# Environment files (API keys - NEVER commit these!)
+.env
+.env.local
+.env.*.local
+*.env
 .atom/
 .build/
 .buildlog/

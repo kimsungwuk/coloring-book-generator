@@ -35,15 +35,24 @@ class ImageSyncService {
   Future<Map<String, dynamic>?> fetchRemoteConfig() async {
     try {
       final url = '$_rawBaseUrl/assets/data/coloring_pages.json';
+      debugPrint('[ImageSync] Fetching remote config from: $url');
+      
       final response = await http.get(Uri.parse(url)).timeout(
-        const Duration(seconds: 10),
+        const Duration(seconds: 15),
       );
       
+      debugPrint('[ImageSync] Response status: ${response.statusCode}');
+      
       if (response.statusCode == 200) {
-        return json.decode(response.body) as Map<String, dynamic>;
+        final config = json.decode(response.body) as Map<String, dynamic>;
+        final pages = config['pages'] as List?;
+        debugPrint('[ImageSync] Remote config loaded: ${pages?.length ?? 0} pages');
+        return config;
+      } else {
+        debugPrint('[ImageSync] Failed with status: ${response.statusCode}');
       }
     } catch (e) {
-      debugPrint('Failed to fetch remote config: $e');
+      debugPrint('[ImageSync] Failed to fetch remote config: $e');
     }
     return null;
   }
@@ -103,6 +112,8 @@ class ImageSyncService {
   Future<bool> downloadImage(String imagePath) async {
     try {
       final url = '$_rawBaseUrl/$imagePath';
+      debugPrint('[ImageSync] Downloading: $url');
+      
       final response = await http.get(Uri.parse(url)).timeout(
         const Duration(seconds: 30),
       );
@@ -112,11 +123,13 @@ class ImageSyncService {
         final fileName = imagePath.split('/').last;
         final localFile = File('${localDir.path}/$fileName');
         await localFile.writeAsBytes(response.bodyBytes);
-        debugPrint('Downloaded: $fileName');
+        debugPrint('[ImageSync] Downloaded successfully: $fileName (${response.bodyBytes.length} bytes)');
         return true;
+      } else {
+        debugPrint('[ImageSync] Download failed with status: ${response.statusCode}');
       }
     } catch (e) {
-      debugPrint('Failed to download image $imagePath: $e');
+      debugPrint('[ImageSync] Failed to download image $imagePath: $e');
     }
     return false;
   }
@@ -191,13 +204,18 @@ class ImageSyncService {
     return null;
   }
 
-  /// 동기화가 필요한지 확인 (마지막 동기화로부터 1시간 이상 경과)
+  /// 동기화가 필요한지 확인 (마지막 동기화로부터 5분 이상 경과)
   Future<bool> needsSync() async {
     final lastSync = await getLastSyncTime();
-    if (lastSync == null) return true;
+    if (lastSync == null) {
+      debugPrint('[ImageSync] No previous sync, needs sync');
+      return true;
+    }
     
     final difference = DateTime.now().difference(lastSync);
-    return difference.inHours >= 1;
+    final needsIt = difference.inMinutes >= 5; // 5분으로 줄임 (테스트용)
+    debugPrint('[ImageSync] Last sync: ${difference.inMinutes} minutes ago, needsSync: $needsIt');
+    return needsIt;
   }
 
   /// 모든 로컬 이미지 삭제 (초기화용)
