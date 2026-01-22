@@ -4,6 +4,7 @@ import json
 import datetime
 import requests
 import sys
+import random
 from openai import OpenAI
 from dotenv import load_dotenv
 from PIL import Image
@@ -75,7 +76,7 @@ def generate_coloring_pages(category_id, count, output_dir="assets/images"):
 
     # 컬러링 도안을 위한 스타일 프롬프트 (얇고 세련된 선)
     STYLE = (
-        "elegant black and white line art illustration for coloring book, "
+        "cute black and white line art illustration for coloring book, "
         "fine thin clean lines, delicate outlines, detailed yet easy to color, "
         "pure white background, no shading, no gradients, no fill, "
         "high quality illustration, professional coloring page, portrait 3:4 aspect ratio"
@@ -151,6 +152,15 @@ if __name__ == "__main__":
         # 명령줄 인자가 있으면 사용 (CI용), 없으면 입력 받음 (로컬용)
         if len(sys.argv) > 1:
             category = sys.argv[1]
+            # 'random'인 경우 JSON 설정에서 랜덤하게 선택
+            if category == "random":
+                config = load_config()
+                if config["categories"]:
+                    category = random.choice(config["categories"])["id"]
+                    print(f"랜덤 카테고리 선택됨: {category}")
+                else:
+                    category = "animals"
+            
             try:
                 count = int(sys.argv[2]) if len(sys.argv) > 2 else 1
             except ValueError:

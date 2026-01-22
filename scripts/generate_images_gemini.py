@@ -2,9 +2,13 @@ import os
 import time
 import json
 import datetime
+import sys
+import random
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
+from PIL import Image
+from io import BytesIO
 
 # .env 파일에서 환경 변수 로드
 load_dotenv()
@@ -83,14 +87,15 @@ def generate_coloring_pages(category_id, count, output_dir="assets/images"):
     subjects = generate_subjects(category_id, count)
     print(f"선정된 주제: {', '.join(subjects)}")
 
-    # 컬러링 도안을 위한 이미지 생성 스타일
-    BASE_STYLE = (
-        "simple black and white line art illustration, coloring book page style, "
-        "clear thick black outlines, bold lines, pure white background, no shading, "
-        "no gradients, minimal detail, high contrast"
+    # 컬러링 도안을 위한 이미지 생성 스타일 (OpenAI 버전과 동일)
+    STYLE = (
+        "cute black and white line art illustration for coloring book, "
+        "fine thin clean lines, delicate outlines, detailed yet easy to color, "
+        "pure white background, no shading, no gradients, no fill, "
+        "high quality illustration, professional coloring page, portrait 3:4 aspect ratio"
     )
 
-    # 시스템 리스트 기반 이미지 모델 후보 (Imagen 3 추가)
+    # 시스템 리스트 기반 이미지 모델 후보
     image_models = [
         'imagen-3.0-generate-002',
         'imagen-3.0-fast-generate-001',
@@ -112,7 +117,7 @@ def generate_coloring_pages(category_id, count, output_dir="assets/images"):
                     print(f"  사용 모델: {img_model}")
                     image_response = client.models.generate_images(
                         model=img_model, 
-                        prompt=f"{subject}, {BASE_STYLE}",
+                        prompt=f"{subject}, {STYLE}",
                         config=types.GenerateImagesConfig(
                             number_of_images=1,
                             aspect_ratio="9:16",
@@ -121,7 +126,23 @@ def generate_coloring_pages(category_id, count, output_dir="assets/images"):
                     )
 
                     if image_response.generated_images:
-                        image_response.generated_images[0].image.save(output_path)
+                        # 이미지 데이터를 메모리에 불러옴
+                        raw_image = image_response.generated_images[0].image
+                        
+                        # 3:4 비율로 크롭 (9:16 -> 3:4)
+                        # Imagen 9:16은 보통 896x1592 혹은 비슷한 크기
+                        width, height = raw_image.size
+                        target_width = width
+                        target_height = int(width * (4 / 3))
+                        
+                        if height > target_height:
+                            top = (height - target_height) // 2
+                            bottom = top + target_height
+                            cropped_img = raw_image.crop((0, top, target_width, bottom))
+                            cropped_img.save(output_path)
+                        else:
+                            raw_image.save(output_path)
+                            
                         success = True
                         break
                 except Exception as img_e:
@@ -153,19 +174,37 @@ def generate_coloring_pages(category_id, count, output_dir="assets/images"):
     print("\n설정 파일(coloring_pages.json) 업데이트가 완료되었습니다.")
 
 if __name__ == "__main__":
-    print("=== Gemini 도안 대량 생성 프로그램 (V2.3) ===")
+    print("=== Gemini 도안 대량 생성 프로그램 (V2.5) ===")
     
-    category = input("생성할 카테고리 ID를 입력하세요 (예: animals, nature, fantasy, vehicles): ").strip()
-    if not category:
-        category = "animals"
+    if not os.getenv("GEMINI_API_KEY"):
+        print("오류: .env 파일 또는 환경 변수에 GEMINI_API_KEY를 입력해주세요.")
+    else:
+        # 명령줄 인자 처리
+        if len(sys.argv) > 1:
+            category = sys.argv[1]
+            if category == "random":
+                config = load_config()
+                if config["categories"]:
+                    category = random.choice(config["categories"])["id"]
+                    print(f"랜덤 카테고리 선택됨: {category}")
+                else:
+                    category = "animals"
+            try:
+                count = int(sys.argv[2]) if len(sys.argv) > 2 else 1
+            except ValueError:
+                count = 1
+        else:
+            category = input("생성할 카테고리 ID를 입력하세요 (예: animals, nature, fantasy, random): ").strip()
+            if not category:
+                category = "animals"
+            
+            try:
+                count_str = input("생성할 이미지 개수를 입력하세요 (기본 1): ").strip()
+                count = int(count_str) if count_str else 1
+            except ValueError:
+                count = 1
         
-    try:
-        count_str = input("생성할 이미지 개수를 입력하세요 (기본 1): ").strip()
-        count = int(count_str) if count_str else 1
-    except ValueError:
-        count = 1
-    
-    print(f"\n'{category}' 카테고리로 {count}개의 이미지 자동 생성을 시작합니다.")
-    generate_coloring_pages(category, count)
-    
-    print("\n모든 작업이 완료되었습니다.")
+        print(f"\n'{category}' 카테고리로 {count}개의 이미지 자동 생성을 시작합니다.")
+        generate_coloring_pages(category, count)
+        
+        print("\n모든 작업이 완료되었습니다.")

@@ -15,6 +15,22 @@
     {
       "id": "vehicles",
       "nameKey": "categoryVehicles"
+    },
+    {
+      "id": "dinosaurs",
+      "nameKey": "categoryDinosaurs"
+    },
+    {
+      "id": "space",
+      "nameKey": "categorySpace"
+    },
+    {
+      "id": "fairytales",
+      "nameKey": "categoryFairytales"
+    },
+    {
+      "id": "underwater",
+      "nameKey": "categoryUnderwater"
     }
   ],
   "pages": [
@@ -248,6 +264,13 @@
       "nameKey": "pageCar",
       "imagePath": "assets/images/vehicles_20260122224947.png",
       "categoryId": "vehicles"
+    },
+    {
+      "id": "nature_20260123001226",
+      "name": "Butterflies",
+      "nameKey": "pageButterflies",
+      "imagePath": "assets/images/nature_20260123001226.png",
+      "categoryId": "nature"
     }
   ]
 }
