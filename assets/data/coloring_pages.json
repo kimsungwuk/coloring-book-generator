@@ -1,0 +1,253 @@
+{
+  "categories": [
+    {
+      "id": "animals",
+      "nameKey": "categoryAnimals"
+    },
+    {
+      "id": "nature",
+      "nameKey": "categoryNature"
+    },
+    {
+      "id": "fantasy",
+      "nameKey": "categoryFantasy"
+    },
+    {
+      "id": "vehicles",
+      "nameKey": "categoryVehicles"
+    }
+  ],
+  "pages": [
+    {
+      "id": "20260121002708821",
+      "name": "Cute Bunny",
+      "nameKey": "pageCuteBunny",
+      "imagePath": "assets/images/20260121002708821.png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "20260121002708823",
+      "name": "Playful Puppy",
+      "nameKey": "pagePlayfulPuppy",
+      "imagePath": "assets/images/20260121002708823.png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "20260121002708824",
+      "name": "Friendly Bear",
+      "nameKey": "pageFriendlyBear",
+      "imagePath": "assets/images/20260121002708824.png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "20260121002708825",
+      "name": "Happy Bird",
+      "nameKey": "pageHappyBird",
+      "imagePath": "assets/images/20260121002708825.png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "cat",
+      "name": "Cat",
+      "nameKey": "pageCat",
+      "imagePath": "assets/images/cat.png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "elephant",
+      "name": "Elephant",
+      "nameKey": "pageElephant",
+      "imagePath": "assets/images/elephant.png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "giraffe",
+      "name": "Giraffe",
+      "nameKey": "pageGiraffe",
+      "imagePath": "assets/images/giraffe.png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "flower",
+      "name": "Flower",
+      "nameKey": "pageFlower",
+      "imagePath": "assets/images/flower.png",
+      "categoryId": "nature"
+    },
+    {
+      "id": "20260121003808029",
+      "name": "Magic Tree",
+      "nameKey": "pageMagicTree",
+      "imagePath": "assets/images/20260121003808029.png",
+      "categoryId": "nature"
+    },
+    {
+      "id": "20260121003808030",
+      "name": "Beautiful Garden",
+      "nameKey": "pageBeautifulGarden",
+      "imagePath": "assets/images/20260121003808030.png",
+      "categoryId": "nature"
+    },
+    {
+      "id": "20260121003808031",
+      "name": "Unicorn",
+      "nameKey": "pageUnicorn",
+      "imagePath": "assets/images/20260121003808031.png",
+      "categoryId": "fantasy"
+    },
+    {
+      "id": "20260121003808032",
+      "name": "Dragon",
+      "nameKey": "pageDragon",
+      "imagePath": "assets/images/20260121003808032.png",
+      "categoryId": "fantasy"
+    },
+    {
+      "id": "20260121003808033",
+      "name": "Fairy Castle",
+      "nameKey": "pageFairyCastle",
+      "imagePath": "assets/images/20260121003808033.png",
+      "categoryId": "fantasy"
+    },
+    {
+      "id": "20260121003808034",
+      "name": "Race Car",
+      "nameKey": "pageRaceCar",
+      "imagePath": "assets/images/20260121003808034.png",
+      "categoryId": "vehicles"
+    },
+    {
+      "id": "20260122001631324",
+      "name": "20260122001631324",
+      "nameKey": "page20260122001631324",
+      "imagePath": "assets/images/20260122001631324.png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "20260122002258076",
+      "name": "20260122002258076",
+      "nameKey": "page20260122002258076",
+      "imagePath": "assets/images/20260122002258076.png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "20260122002258077",
+      "name": "20260122002258077",
+      "nameKey": "page20260122002258077",
+      "imagePath": "assets/images/20260122002258077.png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "20260122002258078",
+      "name": "20260122002258078",
+      "nameKey": "page20260122002258078",
+      "imagePath": "assets/images/20260122002258078.png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "20260122002625860",
+      "name": "20260122002625860",
+      "nameKey": "page20260122002625860",
+      "imagePath": "assets/images/20260122002625860.png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "20260122002625861",
+      "name": "20260122002625861",
+      "nameKey": "page20260122002625861",
+      "imagePath": "assets/images/20260122002625861.png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "20260122002625862",
+      "name": "20260122002625862",
+      "nameKey": "page20260122002625862",
+      "imagePath": "assets/images/20260122002625862.png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "coloring (1)",
+      "name": "Coloring (1)",
+      "nameKey": "pageColoring (1)",
+      "imagePath": "assets/images/coloring (1).png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "coloring (2)",
+      "name": "Coloring (2)",
+      "nameKey": "pageColoring (2)",
+      "imagePath": "assets/images/coloring (2).png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "coloring (3)",
+      "name": "Coloring (3)",
+      "nameKey": "pageColoring (3)",
+      "imagePath": "assets/images/coloring (3).png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "coloring",
+      "name": "Coloring",
+      "nameKey": "pageColoring",
+      "imagePath": "assets/images/coloring.png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "coloring_20260122002733308",
+      "name": "Coloring 20260122002733308",
+      "nameKey": "pageColoring20260122002733308",
+      "imagePath": "assets/images/coloring_20260122002733308.png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "coloring_20260122002733309",
+      "name": "Coloring 20260122002733309",
+      "nameKey": "pageColoring20260122002733309",
+      "imagePath": "assets/images/coloring_20260122002733309.png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "coloring_20260122002733310",
+      "name": "Coloring 20260122002733310",
+      "nameKey": "pageColoring20260122002733310",
+      "imagePath": "assets/images/coloring_20260122002733310.png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "coloring_20260122002733311",
+      "name": "Coloring 20260122002733311",
+      "nameKey": "pageColoring20260122002733311",
+      "imagePath": "assets/images/coloring_20260122002733311.png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "coloring_20260122002733312",
+      "name": "Coloring 20260122002733312",
+      "nameKey": "pageColoring20260122002733312",
+      "imagePath": "assets/images/coloring_20260122002733312.png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "coloring_20260122002733313",
+      "name": "Coloring 20260122002733313",
+      "nameKey": "pageColoring20260122002733313",
+      "imagePath": "assets/images/coloring_20260122002733313.png",
+      "categoryId": "animals"
+    },
+    {
+      "id": "fantasy_20260122223852",
+      "name": "Unicorn",
+      "nameKey": "pageUnicorn",
+      "imagePath": "assets/images/fantasy_20260122223852.png",
+      "categoryId": "fantasy"
+    },
+    {
+      "id": "vehicles_20260122224947",
+      "name": "Car",
+      "nameKey": "pageCar",
+      "imagePath": "assets/images/vehicles_20260122224947.png",
+      "categoryId": "vehicles"
+    }
+  ]
+}

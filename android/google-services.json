@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "208810192309",
+    "project_id": "mycoloringbook-606e6",
+    "storage_bucket": "mycoloringbook-606e6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208810192309:android:a332ef16a8b435758cbdfc",
+        "android_client_info": {
+          "package_name": "com.hjhyhwsw.mycoloringbook"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEnthAgfmtqYoHXaQss4ns81SPRiEEbA0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
