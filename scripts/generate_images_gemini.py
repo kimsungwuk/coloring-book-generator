@@ -7,8 +7,6 @@ import random
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
-from PIL import Image
-from io import BytesIO
 
 # .env 파일에서 환경 변수 로드
 load_dotenv()
@@ -87,12 +85,12 @@ def generate_coloring_pages(category_id, count, output_dir="assets/images"):
     subjects = generate_subjects(category_id, count)
     print(f"선정된 주제: {', '.join(subjects)}")
 
-    # 컬러링 도안을 위한 이미지 생성 스타일 (OpenAI 버전과 동일)
+    # 컬러링 도안을 위한 이미지 생성 스타일
     STYLE = (
         "cute black and white line art illustration for coloring book, "
         "fine thin clean lines, delicate outlines, detailed yet easy to color, "
         "pure white background, no shading, no gradients, no fill, "
-        "high quality illustration, professional coloring page, portrait 3:4 aspect ratio"
+        "high quality illustration, professional coloring page"
     )
 
     # 시스템 리스트 기반 이미지 모델 후보
@@ -120,29 +118,14 @@ def generate_coloring_pages(category_id, count, output_dir="assets/images"):
                         prompt=f"{subject}, {STYLE}",
                         config=types.GenerateImagesConfig(
                             number_of_images=1,
-                            aspect_ratio="9:16",
+                            aspect_ratio="3:4", # 9:16 대신 직접 3:4로 생성
                             output_mime_type="image/png"
                         )
                     )
 
                     if image_response.generated_images:
-                        # 이미지 데이터를 메모리에 불러옴
-                        raw_image = image_response.generated_images[0].image
-                        
-                        # 3:4 비율로 크롭 (9:16 -> 3:4)
-                        # Imagen 9:16은 보통 896x1592 혹은 비슷한 크기
-                        width, height = raw_image.size
-                        target_width = width
-                        target_height = int(width * (4 / 3))
-                        
-                        if height > target_height:
-                            top = (height - target_height) // 2
-                            bottom = top + target_height
-                            cropped_img = raw_image.crop((0, top, target_width, bottom))
-                            cropped_img.save(output_path)
-                        else:
-                            raw_image.save(output_path)
-                            
+                        # 별도의 후처리 없이 바로 저장
+                        image_response.generated_images[0].image.save(output_path)
                         success = True
                         break
                 except Exception as img_e:
@@ -174,7 +157,7 @@ def generate_coloring_pages(category_id, count, output_dir="assets/images"):
     print("\n설정 파일(coloring_pages.json) 업데이트가 완료되었습니다.")
 
 if __name__ == "__main__":
-    print("=== Gemini 도안 대량 생성 프로그램 (V2.5) ===")
+    print("=== Gemini 도안 대량 생성 프로그램 (V2.6) ===")
     
     if not os.getenv("GEMINI_API_KEY"):
         print("오류: .env 파일 또는 환경 변수에 GEMINI_API_KEY를 입력해주세요.")
