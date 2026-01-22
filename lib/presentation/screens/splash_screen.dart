@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../core/constants/app_constants.dart';
+import '../../data/repositories/coloring_repository.dart';
 import 'main_home_page.dart';
 
-/// 스플래시 화면
+/// 스플래시 화면 - 앱 시작 시 이미지 동기화 수행
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -15,6 +16,11 @@ class _SplashScreenState extends State<SplashScreen>
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
+
+  final ColoringRepository _repository = ColoringRepository();
+  
+  String _statusText = '';
+  bool _isSyncing = false;
 
   @override
   void initState() {
@@ -41,29 +47,89 @@ class _SplashScreenState extends State<SplashScreen>
 
     _animationController.forward();
 
-    // 스플래시 화면 후 홈으로 이동
-    Future.delayed(
+    // 이미지 동기화 및 네비게이션
+    _initializeAndNavigate();
+  }
+
+  Future<void> _initializeAndNavigate() async {
+    // 최소 스플래시 시간 보장
+    final minSplashFuture = Future.delayed(
       const Duration(seconds: AppConstants.splashDuration),
-      () {
-        if (mounted) {
-          Navigator.pushReplacement(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) =>
-                  const MainHomePage(),
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: child,
-                );
-              },
-              transitionDuration: const Duration(milliseconds: 500),
-            ),
-          );
-        }
-      },
     );
+
+    // 이미지 동기화 시도
+    await _syncImages();
+
+    // 최소 스플래시 시간 대기
+    await minSplashFuture;
+
+    // 홈 화면으로 이동
+    if (mounted) {
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              const MainHomePage(),
+          transitionsBuilder:
+              (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+          transitionDuration: const Duration(milliseconds: 500),
+        ),
+      );
+    }
+  }
+
+  Future<void> _syncImages() async {
+    try {
+      // 동기화 필요 여부 확인
+      final needsSync = await _repository.needsSync();
+      
+      if (needsSync) {
+        setState(() {
+          _isSyncing = true;
+          _statusText = 'Checking for new images...';
+        });
+
+        final (downloaded, total) = await _repository.syncImages(
+          onProgress: (current, totalPages) {
+            if (mounted) {
+              setState(() {
+                _statusText = 'Syncing images ($current/$totalPages)';
+              });
+            }
+          },
+        );
+
+        if (mounted) {
+          if (downloaded > 0) {
+            setState(() {
+              _statusText = '$downloaded new images downloaded!';
+            });
+          } else {
+            setState(() {
+              _statusText = 'All images up to date';
+            });
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('Sync error: $e');
+      if (mounted) {
+        setState(() {
+          _statusText = 'Offline mode';
+        });
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSyncing = false;
+        });
+      }
+    }
   }
 
   @override
@@ -144,6 +210,23 @@ class _SplashScreenState extends State<SplashScreen>
                             ),
                           ),
                         ),
+                        // 동기화 상태 텍스트
+                        if (_statusText.isNotEmpty) ...[
+                          const SizedBox(height: 16),
+                          AnimatedOpacity(
+                            opacity: _statusText.isNotEmpty ? 1.0 : 0.0,
+                            duration: const Duration(milliseconds: 300),
+                            child: Text(
+                              _statusText,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    color: Colors.white70,
+                                  ),
+                            ),
+                          ),
+                        ],
                       ],
                     ),
                   ),

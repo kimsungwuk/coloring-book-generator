@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
@@ -138,8 +139,43 @@ class FloodFillService {
         height: image.height,
       );
     } catch (e) {
-      debugPrint('Error loading image: $e');
+      debugPrint('Error loading image from asset: $e');
       return null;
+    }
+  }
+
+  /// 로컬 파일에서 이미지를 로드하고 RGBA 픽셀 데이터로 변환
+  static Future<ImageData?> loadImageFromFile(String filePath) async {
+    try {
+      final File file = File(filePath);
+      if (!await file.exists()) return null;
+      
+      final Uint8List bytes = await file.readAsBytes();
+      
+      final ui.Codec codec = await ui.instantiateImageCodec(bytes);
+      final ui.FrameInfo frameInfo = await codec.getNextFrame();
+      final ui.Image image = frameInfo.image;
+      
+      final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.rawRgba);
+      if (byteData == null) return null;
+      
+      return ImageData(
+        pixels: byteData.buffer.asUint8List(),
+        width: image.width,
+        height: image.height,
+      );
+    } catch (e) {
+      debugPrint('Error loading image from file: $e');
+      return null;
+    }
+  }
+
+  /// 경로 유형에 따라 적절한 로더 사용 (에셋 또는 파일)
+  static Future<ImageData?> loadImageAuto(String path, {bool isFile = false}) async {
+    if (isFile) {
+      return await loadImageFromFile(path);
+    } else {
+      return await loadImageFromAsset(path);
     }
   }
 

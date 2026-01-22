@@ -87,10 +87,10 @@ def generate_coloring_pages(category_id, count, output_dir="assets/images"):
 
     # 컬러링 도안을 위한 이미지 생성 스타일
     STYLE = (
-        "cute black and white line art illustration for coloring book, "
+        "simple black and white line art illustration for coloring book, "
         "fine thin clean lines, delicate outlines, detailed yet easy to color, "
         "pure white background, no shading, no gradients, no fill, "
-        "high quality illustration, professional coloring page"
+        "high quality illustration, kids coloring page"
     )
 
     # 시스템 리스트 기반 이미지 모델 후보

@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/services/flood_fill_service.dart';
+import '../../data/repositories/coloring_repository.dart';
 
 /// 색칠 상태 관리 Provider
 class ColoringProvider extends ChangeNotifier {
@@ -48,13 +49,17 @@ class ColoringProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// 이미지 로드
+  /// 이미지 로드 (동기화된 이미지 파일 또는 번들 에셋 자동 판단)
   Future<void> loadImage(String assetPath) async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      final data = await FloodFillService.loadImageFromAsset(assetPath);
+      // ColoringRepository를 통해 이미지 경로 해결
+      final repository = ColoringRepository();
+      final (resolvedPath, isFile) = await repository.resolveImagePath(assetPath);
+      
+      final data = await FloodFillService.loadImageAuto(resolvedPath, isFile: isFile);
       if (data != null) {
         _imageData = data;
         _originalImageData = ImageData(
@@ -89,8 +94,11 @@ class ColoringProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      // 원본 이미지 먼저 로드 (Clear용)
-      final originalData = await FloodFillService.loadImageFromAsset(assetPath);
+      // 원본 이미지 먼저 로드 (Clear용) - 동기화된 이미지 지원
+      final repository = ColoringRepository();
+      final (resolvedPath, isFile) = await repository.resolveImagePath(assetPath);
+      
+      final originalData = await FloodFillService.loadImageAuto(resolvedPath, isFile: isFile);
       if (originalData != null) {
         _originalImageData = ImageData(
           pixels: Uint8List.fromList(originalData.pixels),

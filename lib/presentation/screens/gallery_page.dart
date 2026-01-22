@@ -5,6 +5,7 @@ import '../../data/models/category_model.dart';
 import '../../data/models/coloring_page_model.dart';
 import '../../data/repositories/coloring_repository.dart';
 import '../widgets/banner_ad_widget.dart';
+import '../widgets/synced_image_widget.dart';
 import 'coloring_page.dart';
 
 /// 카테고리별 갤러리 화면
@@ -193,8 +194,8 @@ class _ColoringPageThumbnail extends StatelessWidget {
                 Positioned.fill(
                   child: Padding(
                     padding: const EdgeInsets.all(16),
-                    child: Image.asset(
-                      page.thumbnailPath,
+                    child: SyncedImageWidget(
+                      assetPath: page.thumbnailPath,
                       fit: BoxFit.contain,
                     ),
                   ),
