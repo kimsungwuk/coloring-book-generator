@@ -1,297 +1,176 @@
 {
   "categories": [
     {
-      "id": "animals",
-      "nameKey": "categoryAnimals"
+      "id": "forest",
+      "nameKey": "categoryForest",
+      "isFree": true
     },
     {
-      "id": "nature",
-      "nameKey": "categoryNature"
+      "id": "ocean",
+      "nameKey": "categoryOcean",
+      "isFree": false
     },
     {
-      "id": "fantasy",
-      "nameKey": "categoryFantasy"
+      "id": "fairy",
+      "nameKey": "categoryFairy",
+      "isFree": false
     },
     {
       "id": "vehicles",
-      "nameKey": "categoryVehicles"
+      "nameKey": "categoryVehicles",
+      "isFree": false
     },
     {
       "id": "dinosaurs",
-      "nameKey": "categoryDinosaurs"
+      "nameKey": "categoryDinosaurs",
+      "isFree": false
     },
     {
-      "id": "space",
-      "nameKey": "categorySpace"
-    },
-    {
-      "id": "fairytales",
-      "nameKey": "categoryFairytales"
-    },
-    {
-      "id": "underwater",
-      "nameKey": "categoryUnderwater"
+      "id": "desserts",
+      "nameKey": "categoryDesserts",
+      "isFree": false
     }
   ],
   "pages": [
     {
-      "id": "20260121002708821",
-      "name": "Cute Bunny",
-      "nameKey": "pageCuteBunny",
-      "imagePath": "assets/images/20260121002708821.png",
-      "categoryId": "animals"
+      "id": "forest_20260123232213_0",
+      "name": "A cute squirrel wearing a party hat in front of a small acorn cake",
+      "nameKey": "pageForest1",
+      "imagePath": "assets/images/forest_20260123232213_0.png",
+      "categoryId": "forest"
     },
     {
-      "id": "20260121002708823",
-      "name": "Playful Puppy",
-      "nameKey": "pagePlayfulPuppy",
-      "imagePath": "assets/images/20260121002708823.png",
-      "categoryId": "animals"
+      "id": "forest_20260123232221_1",
+      "name": "A wise owl wearing large glasses reading a thick book on a tree branch",
+      "nameKey": "pageForest2",
+      "imagePath": "assets/images/forest_20260123232221_1.png",
+      "categoryId": "forest"
     },
     {
-      "id": "20260121002708824",
-      "name": "Friendly Bear",
-      "nameKey": "pageFriendlyBear",
-      "imagePath": "assets/images/20260121002708824.png",
-      "categoryId": "animals"
+      "id": "forest_20260123232231_2",
+      "name": "An artist fox holding a palette and brush painting a forest landscape",
+      "nameKey": "pageForest3",
+      "imagePath": "assets/images/forest_20260123232231_2.png",
+      "categoryId": "forest"
     },
     {
-      "id": "20260121002708825",
-      "name": "Happy Bird",
-      "nameKey": "pageHappyBird",
-      "imagePath": "assets/images/20260121002708825.png",
-      "categoryId": "animals"
+      "id": "forest_20260123232240_3",
+      "name": "A baby frog holding a large lotus leaf as an umbrella in the rain",
+      "nameKey": "pageForest4",
+      "imagePath": "assets/images/forest_20260123232240_3.png",
+      "categoryId": "forest"
     },
     {
-      "id": "cat",
-      "name": "Cat",
-      "nameKey": "pageCat",
-      "imagePath": "assets/images/cat.png",
-      "categoryId": "animals"
+      "id": "forest_20260123232248_4",
+      "name": "A baby bear cub sleeping soundly on a mossy bed with a small pillow",
+      "nameKey": "pageForest5",
+      "imagePath": "assets/images/forest_20260123232248_4.png",
+      "categoryId": "forest"
     },
     {
-      "id": "elephant",
-      "name": "Elephant",
-      "nameKey": "pageElephant",
-      "imagePath": "assets/images/elephant.png",
-      "categoryId": "animals"
+      "id": "forest_20260123232256_5",
+      "name": "A raccoon chef stirring a pot of berry soup over a campfire",
+      "nameKey": "pageForest6",
+      "imagePath": "assets/images/forest_20260123232256_5.png",
+      "categoryId": "forest"
     },
     {
-      "id": "giraffe",
-      "name": "Giraffe",
-      "nameKey": "pageGiraffe",
-      "imagePath": "assets/images/giraffe.png",
-      "categoryId": "animals"
+      "id": "forest_20260123232305_6",
+      "name": "An otter sitting by a stream holding a small wooden fishing rod",
+      "nameKey": "pageForest7",
+      "imagePath": "assets/images/forest_20260123232305_6.png",
+      "categoryId": "forest"
     },
     {
-      "id": "flower",
-      "name": "Flower",
-      "nameKey": "pageFlower",
-      "imagePath": "assets/images/flower.png",
-      "categoryId": "nature"
+      "id": "forest_20260123232313_7",
+      "name": "A musician cricket playing a tiny violin under a large mushroom",
+      "nameKey": "pageForest8",
+      "imagePath": "assets/images/forest_20260123232313_7.png",
+      "categoryId": "forest"
     },
     {
-      "id": "20260121003808029",
-      "name": "Magic Tree",
-      "nameKey": "pageMagicTree",
-      "imagePath": "assets/images/20260121003808029.png",
-      "categoryId": "nature"
+      "id": "forest_20260123232321_8",
+      "name": "A graceful deer carrying a basket of colorful forest flowers",
+      "nameKey": "pageForest9",
+      "imagePath": "assets/images/forest_20260123232321_8.png",
+      "categoryId": "forest"
     },
     {
-      "id": "20260121003808030",
-      "name": "Beautiful Garden",
-      "nameKey": "pageBeautifulGarden",
-      "imagePath": "assets/images/20260121003808030.png",
-      "categoryId": "nature"
+      "id": "forest_20260123232329_9",
+      "name": "A hedgehog roasting a marshmallow on a stick in front of a tiny tent",
+      "nameKey": "pageForest10",
+      "imagePath": "assets/images/forest_20260123232329_9.png",
+      "categoryId": "forest"
     },
     {
-      "id": "20260121003808031",
-      "name": "Unicorn",
-      "nameKey": "pageUnicorn",
-      "imagePath": "assets/images/20260121003808031.png",
-      "categoryId": "fantasy"
+      "id": "forest_20260123232338_10",
+      "name": "A happy rabbit swinging on a vine swing hanging from a large oak tree",
+      "nameKey": "pageForest11",
+      "imagePath": "assets/images/forest_20260123232338_10.png",
+      "categoryId": "forest"
     },
     {
-      "id": "20260121003808032",
-      "name": "Dragon",
-      "nameKey": "pageDragon",
-      "imagePath": "assets/images/20260121003808032.png",
-      "categoryId": "fantasy"
+      "id": "forest_20260123232348_11",
+      "name": "A mole writing a letter with a quill pen next to a woodland mailbox",
+      "nameKey": "pageForest12",
+      "imagePath": "assets/images/forest_20260123232348_11.png",
+      "categoryId": "forest"
     },
     {
-      "id": "20260121003808033",
-      "name": "Fairy Castle",
-      "nameKey": "pageFairyCastle",
-      "imagePath": "assets/images/20260121003808033.png",
-      "categoryId": "fantasy"
+      "id": "forest_20260123232356_12",
+      "name": "A badger relaxing in a small hammock tied between two birch trees",
+      "nameKey": "pageForest13",
+      "imagePath": "assets/images/forest_20260123232356_12.png",
+      "categoryId": "forest"
     },
     {
-      "id": "20260121003808034",
-      "name": "Race Car",
-      "nameKey": "pageRaceCar",
-      "imagePath": "assets/images/20260121003808034.png",
-      "categoryId": "vehicles"
+      "id": "forest_20260123232404_13",
+      "name": "A young wolf pup wearing an explorer hat holding a map and compass",
+      "nameKey": "pageForest14",
+      "imagePath": "assets/images/forest_20260123232404_13.png",
+      "categoryId": "forest"
     },
     {
-      "id": "20260122001631324",
-      "name": "20260122001631324",
-      "nameKey": "page20260122001631324",
-      "imagePath": "assets/images/20260122001631324.png",
-      "categoryId": "animals"
+      "id": "forest_20260123232412_14",
+      "name": "A baby lynx sitting on a log blowing giant soap bubbles",
+      "nameKey": "pageForest15",
+      "imagePath": "assets/images/forest_20260123232412_14.png",
+      "categoryId": "forest"
     },
     {
-      "id": "20260122002258076",
-      "name": "20260122002258076",
-      "nameKey": "page20260122002258076",
-      "imagePath": "assets/images/20260122002258076.png",
-      "categoryId": "animals"
+      "id": "forest_20260123232420_15",
+      "name": "A weasel wearing a scarf skating gracefully on a frozen forest pond",
+      "nameKey": "pageForest16",
+      "imagePath": "assets/images/forest_20260123232420_15.png",
+      "categoryId": "forest"
     },
     {
-      "id": "20260122002258077",
-      "name": "20260122002258077",
-      "nameKey": "page20260122002258077",
-      "imagePath": "assets/images/20260122002258077.png",
-      "categoryId": "animals"
+      "id": "forest_20260123232428_16",
+      "name": "A friendly wild boar carrying a beautifully wrapped gift box",
+      "nameKey": "pageForest17",
+      "imagePath": "assets/images/forest_20260123232428_16.png",
+      "categoryId": "forest"
     },
     {
-      "id": "20260122002258078",
-      "name": "20260122002258078",
-      "nameKey": "page20260122002258078",
-      "imagePath": "assets/images/20260122002258078.png",
-      "categoryId": "animals"
+      "id": "forest_20260123232436_17",
+      "name": "A squirrel photographer holding a tiny vintage camera taking flower photos",
+      "nameKey": "pageForest18",
+      "imagePath": "assets/images/forest_20260123232436_17.png",
+      "categoryId": "forest"
     },
     {
-      "id": "20260122002625860",
-      "name": "20260122002625860",
-      "nameKey": "page20260122002625860",
-      "imagePath": "assets/images/20260122002625860.png",
-      "categoryId": "animals"
+      "id": "forest_20260123232444_18",
+      "name": "A busy raccoon washing a small handkerchief in a clear forest brook",
+      "nameKey": "pageForest19",
+      "imagePath": "assets/images/forest_20260123232444_18.png",
+      "categoryId": "forest"
     },
     {
-      "id": "20260122002625861",
-      "name": "20260122002625861",
-      "nameKey": "page20260122002625861",
-      "imagePath": "assets/images/20260122002625861.png",
-      "categoryId": "animals"
-    },
-    {
-      "id": "20260122002625862",
-      "name": "20260122002625862",
-      "nameKey": "page20260122002625862",
-      "imagePath": "assets/images/20260122002625862.png",
-      "categoryId": "animals"
-    },
-    {
-      "id": "coloring (1)",
-      "name": "Coloring (1)",
-      "nameKey": "pageColoring (1)",
-      "imagePath": "assets/images/coloring (1).png",
-      "categoryId": "animals"
-    },
-    {
-      "id": "coloring (2)",
-      "name": "Coloring (2)",
-      "nameKey": "pageColoring (2)",
-      "imagePath": "assets/images/coloring (2).png",
-      "categoryId": "animals"
-    },
-    {
-      "id": "coloring (3)",
-      "name": "Coloring (3)",
-      "nameKey": "pageColoring (3)",
-      "imagePath": "assets/images/coloring (3).png",
-      "categoryId": "animals"
-    },
-    {
-      "id": "coloring",
-      "name": "Coloring",
-      "nameKey": "pageColoring",
-      "imagePath": "assets/images/coloring.png",
-      "categoryId": "animals"
-    },
-    {
-      "id": "coloring_20260122002733308",
-      "name": "Coloring 20260122002733308",
-      "nameKey": "pageColoring20260122002733308",
-      "imagePath": "assets/images/coloring_20260122002733308.png",
-      "categoryId": "animals"
-    },
-    {
-      "id": "coloring_20260122002733309",
-      "name": "Coloring 20260122002733309",
-      "nameKey": "pageColoring20260122002733309",
-      "imagePath": "assets/images/coloring_20260122002733309.png",
-      "categoryId": "animals"
-    },
-    {
-      "id": "coloring_20260122002733310",
-      "name": "Coloring 20260122002733310",
-      "nameKey": "pageColoring20260122002733310",
-      "imagePath": "assets/images/coloring_20260122002733310.png",
-      "categoryId": "animals"
-    },
-    {
-      "id": "coloring_20260122002733311",
-      "name": "Coloring 20260122002733311",
-      "nameKey": "pageColoring20260122002733311",
-      "imagePath": "assets/images/coloring_20260122002733311.png",
-      "categoryId": "animals"
-    },
-    {
-      "id": "coloring_20260122002733312",
-      "name": "Coloring 20260122002733312",
-      "nameKey": "pageColoring20260122002733312",
-      "imagePath": "assets/images/coloring_20260122002733312.png",
-      "categoryId": "animals"
-    },
-    {
-      "id": "coloring_20260122002733313",
-      "name": "Coloring 20260122002733313",
-      "nameKey": "pageColoring20260122002733313",
-      "imagePath": "assets/images/coloring_20260122002733313.png",
-      "categoryId": "animals"
-    },
-    {
-      "id": "fantasy_20260122223852",
-      "name": "Unicorn",
-      "nameKey": "pageUnicorn",
-      "imagePath": "assets/images/fantasy_20260122223852.png",
-      "categoryId": "fantasy"
-    },
-    {
-      "id": "vehicles_20260122224947",
-      "name": "Car",
-      "nameKey": "pageCar",
-      "imagePath": "assets/images/vehicles_20260122224947.png",
-      "categoryId": "vehicles"
-    },
-    {
-      "id": "nature_20260123001226",
-      "name": "Butterflies",
-      "nameKey": "pageButterflies",
-      "imagePath": "assets/images/nature_20260123001226.png",
-      "categoryId": "nature"
-    },
-    {
-      "id": "nature_20260123004906",
-      "name": "The Ocean",
-      "nameKey": "pageTheOcean",
-      "imagePath": "assets/images/nature_20260123004906.png",
-      "categoryId": "nature"
-    },
-    {
-      "id": "nature_20260123010630",
-      "name": "Butterflies",
-      "nameKey": "pageButterflies",
-      "imagePath": "assets/images/nature_20260123010630.png",
-      "categoryId": "nature"
-    },
-    {
-      "id": "nature_20260123010728",
-      "name": "Sea Creatures",
-      "nameKey": "pageSeaCreatures",
-      "imagePath": "assets/images/nature_20260123010728.png",
-      "categoryId": "nature"
+      "id": "forest_20260123232453_19",
+      "name": "A skunk astronomer looking through a telescope at a starry night sky",
+      "nameKey": "pageForest20",
+      "imagePath": "assets/images/forest_20260123232453_19.png",
+      "categoryId": "forest"
     }
   ]
 }

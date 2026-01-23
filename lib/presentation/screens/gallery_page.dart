@@ -46,14 +46,18 @@ class _GalleryPageState extends State<GalleryPage> {
   String _getCategoryName(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     switch (widget.category.id) {
-      case 'animals':
-        return l10n.categoryAnimals;
-      case 'nature':
-        return l10n.categoryNature;
-      case 'fantasy':
-        return l10n.categoryFantasy;
+      case 'forest':
+        return l10n.categoryForest;
+      case 'ocean':
+        return l10n.categoryOcean;
+      case 'fairy':
+        return l10n.categoryFairy;
       case 'vehicles':
         return l10n.categoryVehicles;
+      case 'dinosaurs':
+        return l10n.categoryDinosaurs;
+      case 'desserts':
+        return l10n.categoryDesserts;
       default:
         return widget.category.id;
     }

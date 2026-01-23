@@ -248,29 +248,41 @@ abstract class AppLocalizations {
   /// **'Select Category'**
   String get selectCategory;
 
-  /// No description provided for @categoryAnimals.
+  /// No description provided for @categoryForest.
   ///
   /// In en, this message translates to:
-  /// **'Animals'**
-  String get categoryAnimals;
+  /// **'Forest Friends'**
+  String get categoryForest;
 
-  /// No description provided for @categoryNature.
+  /// No description provided for @categoryOcean.
   ///
   /// In en, this message translates to:
-  /// **'Nature'**
-  String get categoryNature;
+  /// **'Ocean Adventure'**
+  String get categoryOcean;
 
-  /// No description provided for @categoryFantasy.
+  /// No description provided for @categoryFairy.
   ///
   /// In en, this message translates to:
-  /// **'Fantasy'**
-  String get categoryFantasy;
+  /// **'Fairyland'**
+  String get categoryFairy;
 
   /// No description provided for @categoryVehicles.
   ///
   /// In en, this message translates to:
-  /// **'Vehicles'**
+  /// **'Move & Zoom'**
   String get categoryVehicles;
+
+  /// No description provided for @categoryDinosaurs.
+  ///
+  /// In en, this message translates to:
+  /// **'Dino World'**
+  String get categoryDinosaurs;
+
+  /// No description provided for @categoryDesserts.
+  ///
+  /// In en, this message translates to:
+  /// **'Sweet Treats'**
+  String get categoryDesserts;
 
   /// No description provided for @continueDrawing.
   ///

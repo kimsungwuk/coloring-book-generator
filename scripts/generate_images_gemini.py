@@ -31,12 +31,25 @@ def save_config(config):
     config_path = 'assets/data/coloring_pages.json'
     with open(config_path, 'w', encoding='utf-8') as f:
         json.dump(config, f, indent=2, ensure_ascii=False)
-
 def generate_subjects(category_id, count):
     """
     Gemini를 사용하여 주어진 카테고리에 적합한 색칠공부 주제 목록을 생성합니다.
     """
-    prompt = f"Create a list of {count} unique and popular subjects for a children's coloring book in the '{category_id}' category. Return ONLY the names of the subjects separated by commas, no numbers or descriptions."
+    category_instruction = ""
+    if category_id == "forest":
+        category_instruction = (
+            "The subjects must be charming scenes of forest animals doing cute activities (e.g., 'a cute squirrel having a party with acorns', 'a sleepy bear cub hugging a wooden pillow'). "
+            "Focus on specific forest animals like squirrels, foxes, owls, raccoons, deer, and bears. "
+        )
+    elif category_id == "ocean":
+        category_instruction = "The subjects must be whimsical scenes of sea creatures like 'an octopus playing a drum set' or 'a sea turtle wearing a crown made of shells'. "
+    
+    prompt = (
+        f"Create a list of {count} unique, charming and detailed descriptions for a children's coloring book centered on the '{category_id}' category. "
+        f"{category_instruction} "
+        "Keep each description under 15 words. Focus on a single main subject in a simple action/setting. "
+        "Return ONLY the list of descriptions separated by commas, with no numbering or extra text."
+    )
     
     # 시스템 리스트 기반 모델 후보
     models_to_try = [
@@ -62,10 +75,22 @@ def generate_subjects(category_id, count):
     # 최종 폴백
     return [f"{category_id} subject {i+1}" for i in range(count)]
 
-def generate_coloring_pages(category_id, count, output_dir="assets/images"):
+# 스타일 설정
+style_prompts = {
+    "cartoon": "cute cartoon style, bold thick outlines, very clean lines",
+    "realistic": "detailed line art, realistic proportions, fine outlines",
+    "mandala": "intricate mandala patterns, symmetrical, highly detailed geometric lines",
+    "simple": "extremely simple shapes, very thick borders, minimal detail, perfect for young children"
+}
+
+def generate_coloring_pages(category_id, style, count, output_dir="assets/images"):
     """
     주어진 카테고리에 대해 이미지를 생성하고 설정 파일을 업데이트합니다.
     """
+    if style not in style_prompts:
+        print(f"경고: 정의되지 않은 스타일 '{style}'입니다. 'cartoon' 스타일을 기본값으로 사용합니다.")
+        style = "cartoon"
+
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
@@ -85,18 +110,8 @@ def generate_coloring_pages(category_id, count, output_dir="assets/images"):
     subjects = generate_subjects(category_id, count)
     print(f"선정된 주제: {', '.join(subjects)}")
 
-    # 컬러링 도안을 위한 이미지 생성 스타일
-    STYLE = (
-        "simple black and white line art illustration for coloring book, "
-        "fine thin clean lines, delicate outlines, detailed yet easy to color, "
-        "pure white background, no shading, no gradients, no fill, "
-        "high quality illustration, kids coloring page"
-    )
-
     # 시스템 리스트 기반 이미지 모델 후보
     image_models = [
-        'imagen-3.0-generate-002',
-        'imagen-3.0-fast-generate-001',
         'imagen-4.0-generate-001',
         'imagen-4.0-fast-generate-001'
     ]
@@ -109,16 +124,25 @@ def generate_coloring_pages(category_id, count, output_dir="assets/images"):
             
             print(f"[{subject}] 이미지 생성 시도 중 ({filename})...")
             
+            # 최종 프롬프트 구성 (글자 배제 강화)
+            final_prompt = (
+                f"A coloring book page of a single {subject}. "
+                f"Style: {style_prompts[style]}. "
+                "Requirements: Single main subject centered in the frame, strictly black and white line art, pure white background, no shading, no gray tones, no colors, high contrast, clean white space for coloring. "
+                "CRITICAL: ABSOLUTELY NO TEXT, NO LETTERS, NO WORDS, NO NUMBERS, NO SYMBOLS, NO LABELS, NO CAPTIONS, NO WATERMARKS, NO SIGNATURES. "
+                "The image must be 100% DRAWING ONLY. DO NOT INCLUDE ANY ALPHABETIC OR NUMERIC CHARACTERS AT ALL."
+            )
+
             success = False
             for img_model in image_models:
                 try:
                     print(f"  사용 모델: {img_model}")
                     image_response = client.models.generate_images(
                         model=img_model, 
-                        prompt=f"{subject}, {STYLE}",
+                        prompt=final_prompt,
                         config=types.GenerateImagesConfig(
                             number_of_images=1,
-                            aspect_ratio="3:4", # 9:16 대신 직접 3:4로 생성
+                            aspect_ratio="3:4",
                             output_mime_type="image/png"
                         )
                     )
@@ -172,8 +196,11 @@ if __name__ == "__main__":
                     print(f"랜덤 카테고리 선택됨: {category}")
                 else:
                     category = "animals"
+            
+            style = sys.argv[2] if len(sys.argv) > 2 else "cartoon"
+            
             try:
-                count = int(sys.argv[2]) if len(sys.argv) > 2 else 1
+                count = int(sys.argv[3]) if len(sys.argv) > 3 else 1
             except ValueError:
                 count = 1
         else:
@@ -181,13 +208,26 @@ if __name__ == "__main__":
             if not category:
                 category = "animals"
             
+            if category == "random":
+                config = load_config()
+                if config["categories"]:
+                    category = random.choice(config["categories"])["id"]
+                    print(f"랜덤 카테고리 선택됨: {category}")
+                else:
+                    category = "animals"
+
+            print(f"선택 가능한 스타일: {', '.join(style_prompts.keys())}")
+            style = input("생성할 스타일에 입력하세요 (기본 cartoon): ").strip()
+            if not style:
+                style = "cartoon"
+            
             try:
                 count_str = input("생성할 이미지 개수를 입력하세요 (기본 1): ").strip()
                 count = int(count_str) if count_str else 1
             except ValueError:
                 count = 1
         
-        print(f"\n'{category}' 카테고리로 {count}개의 이미지 자동 생성을 시작합니다.")
-        generate_coloring_pages(category, count)
+        print(f"\n'{category}' 카테고리, '{style}' 스타일로 {count}개의 이미지 자동 생성을 시작합니다.")
+        generate_coloring_pages(category, style, count)
         
         print("\n모든 작업이 완료되었습니다.")

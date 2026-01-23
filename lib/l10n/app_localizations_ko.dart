@@ -84,16 +84,22 @@ class AppLocalizationsKo extends AppLocalizations {
   String get selectCategory => '카테고리 선택';
 
   @override
-  String get categoryAnimals => '동물';
+  String get categoryForest => '숲속마을 친구들';
 
   @override
-  String get categoryNature => '자연';
+  String get categoryOcean => '바닷속 탐험';
 
   @override
-  String get categoryFantasy => '판타지';
+  String get categoryFairy => '반짝반짝 요정나라';
 
   @override
-  String get categoryVehicles => '탈것';
+  String get categoryVehicles => '부릉부릉 탈것';
+
+  @override
+  String get categoryDinosaurs => '둥둥 공룡 시대';
+
+  @override
+  String get categoryDesserts => '냠냠 디저트 파티';
 
   @override
   String get continueDrawing => '이어그리기';

@@ -375,46 +375,57 @@ class _CategoryCard extends StatelessWidget {
 
   IconData _getCategoryIcon() {
     switch (category.id) {
-      case 'animals':
+      case 'forest':
         return Icons.pets;
-      case 'nature':
-        return Icons.park;
-      case 'fantasy':
+      case 'ocean':
+        return Icons.water;
+      case 'fairy':
         return Icons.auto_awesome;
       case 'vehicles':
         return Icons.directions_car;
+      case 'dinosaurs':
+        return Icons.vape_free; // 공룡 느낌의 아이콘이 없어서 대체
+      case 'desserts':
+        return Icons.cake;
       default:
         return Icons.category;
     }
   }
 
   Color _getCategoryColor(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     switch (category.id) {
-      case 'animals':
-        return Colors.orange;
-      case 'nature':
+      case 'forest':
         return Colors.green;
-      case 'fantasy':
+      case 'ocean':
+        return Colors.blue;
+      case 'fairy':
         return Colors.purple;
       case 'vehicles':
-        return Colors.blue;
+        return Colors.orange;
+      case 'dinosaurs':
+        return Colors.brown;
+      case 'desserts':
+        return Colors.pink;
       default:
-        return colorScheme.primary;
+        return Theme.of(context).colorScheme.primary;
     }
   }
 
   String _getCategoryName(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     switch (category.id) {
-      case 'animals':
-        return l10n.categoryAnimals;
-      case 'nature':
-        return l10n.categoryNature;
-      case 'fantasy':
-        return l10n.categoryFantasy;
+      case 'forest':
+        return l10n.categoryForest;
+      case 'ocean':
+        return l10n.categoryOcean;
+      case 'fairy':
+        return l10n.categoryFairy;
       case 'vehicles':
         return l10n.categoryVehicles;
+      case 'dinosaurs':
+        return l10n.categoryDinosaurs;
+      case 'desserts':
+        return l10n.categoryDesserts;
       default:
         return category.id;
     }
@@ -487,16 +498,32 @@ class _CategoryCard extends StatelessWidget {
                   ],
                 ),
               ),
-              // 화살표 아이콘
+              // 화살표 아이콘 또는 잠금 아이콘
               Positioned(
                 right: 12,
                 top: 12,
-                child: Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16,
-                  color: color.withAlpha(150),
-                ),
+                child: category.isFree
+                    ? Icon(
+                        Icons.arrow_forward_ios,
+                        size: 16,
+                        color: color.withAlpha(150),
+                      )
+                    : Icon(
+                        Icons.lock,
+                        size: 18,
+                        color: Colors.amber.shade700,
+                      ),
               ),
+              // 잠금 오버레이 (비무료 카테고리인 경우)
+              if (!category.isFree)
+                Positioned.fill(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black.withAlpha(5),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ),
             ],
           ),
         ),

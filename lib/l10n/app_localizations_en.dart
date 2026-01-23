@@ -86,16 +86,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectCategory => 'Select Category';
 
   @override
-  String get categoryAnimals => 'Animals';
+  String get categoryForest => 'Forest Friends';
 
   @override
-  String get categoryNature => 'Nature';
+  String get categoryOcean => 'Ocean Adventure';
 
   @override
-  String get categoryFantasy => 'Fantasy';
+  String get categoryFairy => 'Fairyland';
 
   @override
-  String get categoryVehicles => 'Vehicles';
+  String get categoryVehicles => 'Move & Zoom';
+
+  @override
+  String get categoryDinosaurs => 'Dino World';
+
+  @override
+  String get categoryDesserts => 'Sweet Treats';
 
   @override
   String get continueDrawing => 'Continue';
