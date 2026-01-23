@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'core/services/iap_service.dart';
 import 'core/services/settings_service.dart';
 import 'l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -29,6 +30,10 @@ void main() async {
   final settingsService = SettingsService();
   await settingsService.init();
   
+  // IAP 서비스 초기화
+  final iapService = IAPService();
+  await iapService.initialize();
+  
   // 상태바 스타일 설정
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -38,8 +43,11 @@ void main() async {
   );
 
   runApp(
-    ChangeNotifierProvider.value(
-      value: settingsService,
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: settingsService),
+        ChangeNotifierProvider.value(value: iapService),
+      ],
       child: const MyColoringBookApp(),
     ),
   );

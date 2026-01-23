@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/services/iap_service.dart';
 import '../../core/services/settings_service.dart';
 import '../../data/models/category_model.dart';
 import '../../data/repositories/coloring_repository.dart';
@@ -337,6 +338,18 @@ class _MainHomePageState extends State<MainHomePage>
   }
 
   void _navigateToGallery(CategoryModel category) {
+    final iapService = Provider.of<IAPService>(context, listen: false);
+    
+    // 무료 카테고리이거나 이미 구매한 경우
+    if (category.isFree || iapService.isCategoryPurchased(category.id)) {
+      _openGallery(category);
+    } else {
+      // 잠긴 카테고리: 구매 다이얼로그 표시
+      _showPurchaseDialog(category);
+    }
+  }
+
+  void _openGallery(CategoryModel category) {
     final settings = Provider.of<SettingsService>(context, listen: false);
     settings.setLastCategory(category.id);
 
@@ -358,6 +371,89 @@ class _MainHomePageState extends State<MainHomePage>
           );
         },
         transitionDuration: const Duration(milliseconds: 300),
+      ),
+    );
+  }
+
+  void _showPurchaseDialog(CategoryModel category) {
+    final l10n = AppLocalizations.of(context)!;
+    final iapService = Provider.of<IAPService>(context, listen: false);
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            Icon(Icons.lock, color: Colors.amber.shade700),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                '잠긴 카테고리',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '이 카테고리를 이용하시려면 구매가 필요합니다.',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary.withAlpha(25),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.star,
+                    color: Colors.amber.shade600,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      '20개의 프리미엄 도안이 포함되어 있습니다!',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(l10n.cancel),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.pop(context);
+              final success = await iapService.purchaseCategory(category.id);
+              if (success && mounted) {
+                // 구매 성공 시 갤러리로 이동
+                _openGallery(category);
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: const Text('구매하기'),
+          ),
+        ],
       ),
     );
   }

@@ -4,6 +4,8 @@ import json
 import datetime
 import sys
 import random
+import cv2
+import numpy as np
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
@@ -31,6 +33,48 @@ def save_config(config):
     config_path = 'assets/data/coloring_pages.json'
     with open(config_path, 'w', encoding='utf-8') as f:
         json.dump(config, f, indent=2, ensure_ascii=False)
+
+def apply_bw_postprocess(image_path: str, threshold_value: int = 200):
+    """
+    이미지를 완벽한 흑백(이진화)으로 변환합니다.
+    - 회색 톤 제거
+    - 선명한 검정 선
+    - 순백 배경
+    """
+    try:
+        # 이미지 로드
+        img = cv2.imread(image_path)
+        if img is None:
+            print(f"  경고: 이미지를 불러올 수 없습니다: {image_path}")
+            return False
+        
+        # 그레이스케일 변환
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        
+        # 가벼운 블러로 노이즈 감소
+        gray = cv2.GaussianBlur(gray, (3, 3), 0)
+        
+        # 이진화 (임계값 기반)
+        _, binary = cv2.threshold(gray, threshold_value, 255, cv2.THRESH_BINARY)
+        
+        # 배경이 어두운지 확인하고 필요시 반전
+        corners = [binary[0, 0], binary[0, -1], binary[-1, 0], binary[-1, -1]]
+        if np.mean(corners) < 128:
+            binary = cv2.bitwise_not(binary)
+        
+        # 작은 노이즈 제거
+        kernel = np.ones((2, 2), np.uint8)
+        binary = cv2.morphologyEx(binary, cv2.MORPH_CLOSE, kernel)
+        binary = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel)
+        
+        # 저장 (원본 덮어쓰기)
+        cv2.imwrite(image_path, binary)
+        print(f"  ✓ 흑백 변환 완료")
+        return True
+        
+    except Exception as e:
+        print(f"  경고: 후처리 실패 - {e}")
+        return False
 def generate_subjects(category_id, count):
     """
     Gemini를 사용하여 주어진 카테고리에 적합한 색칠공부 주제 목록을 생성합니다.
@@ -148,8 +192,13 @@ def generate_coloring_pages(category_id, style, count, output_dir="assets/images
                     )
 
                     if image_response.generated_images:
-                        # 별도의 후처리 없이 바로 저장
+                        # 이미지 저장
                         image_response.generated_images[0].image.save(output_path)
+                        
+                        # 흑백 후처리 적용
+                        print(f"  흑백 후처리 적용 중...")
+                        apply_bw_postprocess(output_path)
+                        
                         success = True
                         break
                 except Exception as img_e:
