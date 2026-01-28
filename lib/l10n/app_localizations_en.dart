@@ -130,4 +130,36 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get selectLanguage => 'Language';
+
+  @override
+  String get lockedPage => 'Locked Page';
+
+  @override
+  String get watchAdToUnlock =>
+      'Watch a short video to unlock this coloring page!';
+
+  @override
+  String get adDuration => 'About 30 seconds · Unlock forever';
+
+  @override
+  String get watchAd => 'Watch Ad';
+
+  @override
+  String get setAsWallpaper => 'Set as Wallpaper';
+
+  @override
+  String get settingWallpaper => 'Setting wallpaper...';
+
+  @override
+  String get wallpaperSetSuccess => 'Wallpaper set successfully!';
+
+  @override
+  String get wallpaperSetError => 'Failed to set wallpaper';
+
+  @override
+  String get wallpaperAdTitle => 'Set as Wallpaper';
+
+  @override
+  String get wallpaperAdMessage =>
+      'Would you like to watch a short video to set this masterpiece as your wallpaper?';
 }

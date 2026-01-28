@@ -39,5 +39,15 @@
   "saveProgressMessage": "나가기 전에 진행상황을 저장하시겠습니까?",
   "discard": "저장 안함",
   "progressSaved": "진행상황이 저장되었습니다!",
-  "selectLanguage": "언어"
+  "selectLanguage": "언어",
+  "lockedPage": "잠긴 도안",
+  "watchAdToUnlock": "짧은 영상을 보고 이 도안을 잠금 해제하세요!",
+  "adDuration": "약 30초 · 영구 잠금 해제",
+  "watchAd": "광고 보기",
+  "setAsWallpaper": "배경화면 설정",
+  "settingWallpaper": "배경화면 설정 중...",
+  "wallpaperSetSuccess": "배경화면이 설정되었습니다!",
+  "wallpaperSetError": "배경화면 설정 실패",
+  "wallpaperAdTitle": "배경화면 설정",
+  "wallpaperAdMessage": "짧은 영상을 시청하고 이 멋진 작품을 배경화면으로 설정하시겠습니까?"
 }

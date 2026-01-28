@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../core/services/iap_service.dart';
 import '../../core/services/settings_service.dart';
 import '../../data/models/category_model.dart';
 import '../../data/repositories/coloring_repository.dart';
@@ -104,38 +103,44 @@ class _MainHomePageState extends State<MainHomePage>
       child: Row(
         children: [
           // 앱 로고/타이틀
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(context).colorScheme.primary.withAlpha(76),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
+          Expanded(
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).colorScheme.primary.withAlpha(76),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: const Icon(
+                    Icons.palette,
+                    color: Colors.white,
+                    size: 24,
+                  ),
                 ),
-                child: const Icon(
-                  Icons.palette,
-                  color: Colors.white,
-                  size: 24,
+                const SizedBox(width: 12),
+                Flexible(
+                  child: Text(
+                    l10n.appTitle,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Text(
-                l10n.appTitle,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-              ),
-            ],
+              ],
+            ),
           ),
-          const Spacer(),
+          const SizedBox(width: 12),
           // 언어 선택 버튼
           _buildLanguageButton(context, settings),
         ],
@@ -323,7 +328,7 @@ class _MainHomePageState extends State<MainHomePage>
             crossAxisCount: 2,
             crossAxisSpacing: 16,
             mainAxisSpacing: 16,
-            childAspectRatio: 1.3,
+            childAspectRatio: 1.1,
           ),
           itemCount: _categories.length,
           itemBuilder: (context, index) {
@@ -338,15 +343,8 @@ class _MainHomePageState extends State<MainHomePage>
   }
 
   void _navigateToGallery(CategoryModel category) {
-    final iapService = Provider.of<IAPService>(context, listen: false);
-    
-    // 무료 카테고리이거나 이미 구매한 경우
-    if (category.isFree || iapService.isCategoryPurchased(category.id)) {
-      _openGallery(category);
-    } else {
-      // 잠긴 카테고리: 구매 다이얼로그 표시
-      _showPurchaseDialog(category);
-    }
+    // 모든 카테고리 무료 - 바로 갤러리 열기
+    _openGallery(category);
   }
 
   void _openGallery(CategoryModel category) {
@@ -375,88 +373,6 @@ class _MainHomePageState extends State<MainHomePage>
     );
   }
 
-  void _showPurchaseDialog(CategoryModel category) {
-    final l10n = AppLocalizations.of(context)!;
-    final iapService = Provider.of<IAPService>(context, listen: false);
-    
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Row(
-          children: [
-            Icon(Icons.lock, color: Colors.amber.shade700),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                '잠긴 카테고리',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-              ),
-            ),
-          ],
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              '이 카테고리를 이용하시려면 구매가 필요합니다.',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 16),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary.withAlpha(25),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.star,
-                    color: Colors.amber.shade600,
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      '20개의 프리미엄 도안이 포함되어 있습니다!',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(l10n.cancel),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              Navigator.pop(context);
-              final success = await iapService.purchaseCategory(category.id);
-              if (success && mounted) {
-                // 구매 성공 시 갤러리로 이동
-                _openGallery(category);
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: const Text('구매하기'),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 /// 카테고리 카드 위젯
@@ -566,13 +482,13 @@ class _CategoryCard extends StatelessWidget {
               ),
               // 컨텐츠
               Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: color.withAlpha(25),
                         borderRadius: BorderRadius.circular(12),
@@ -580,46 +496,34 @@ class _CategoryCard extends StatelessWidget {
                       child: Icon(
                         _getCategoryIcon(),
                         color: color,
-                        size: 28,
+                        size: 24,
                       ),
                     ),
-                    const SizedBox(height: 12),
-                    Text(
-                      _getCategoryName(context),
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
+                    const SizedBox(height: 8),
+                    Flexible(
+                      child: Text(
+                        _getCategoryName(context),
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ],
                 ),
               ),
-              // 화살표 아이콘 또는 잠금 아이콘
+              // 화살표 아이콘
               Positioned(
                 right: 12,
                 top: 12,
-                child: category.isFree
-                    ? Icon(
-                        Icons.arrow_forward_ios,
-                        size: 16,
-                        color: color.withAlpha(150),
-                      )
-                    : Icon(
-                        Icons.lock,
-                        size: 18,
-                        color: Colors.amber.shade700,
-                      ),
-              ),
-              // 잠금 오버레이 (비무료 카테고리인 경우)
-              if (!category.isFree)
-                Positioned.fill(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black.withAlpha(5),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
+                child: Icon(
+                  Icons.arrow_forward_ios,
+                  size: 16,
+                  color: color.withAlpha(150),
                 ),
+              ),
             ],
           ),
         ),

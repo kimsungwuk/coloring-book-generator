@@ -337,6 +337,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Language'**
   String get selectLanguage;
+
+  /// No description provided for @lockedPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked Page'**
+  String get lockedPage;
+
+  /// No description provided for @watchAdToUnlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch a short video to unlock this coloring page!'**
+  String get watchAdToUnlock;
+
+  /// No description provided for @adDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'About 30 seconds · Unlock forever'**
+  String get adDuration;
+
+  /// No description provided for @watchAd.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch Ad'**
+  String get watchAd;
+
+  /// No description provided for @setAsWallpaper.
+  ///
+  /// In en, this message translates to:
+  /// **'Set as Wallpaper'**
+  String get setAsWallpaper;
+
+  /// No description provided for @settingWallpaper.
+  ///
+  /// In en, this message translates to:
+  /// **'Setting wallpaper...'**
+  String get settingWallpaper;
+
+  /// No description provided for @wallpaperSetSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallpaper set successfully!'**
+  String get wallpaperSetSuccess;
+
+  /// No description provided for @wallpaperSetError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to set wallpaper'**
+  String get wallpaperSetError;
+
+  /// No description provided for @wallpaperAdTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set as Wallpaper'**
+  String get wallpaperAdTitle;
+
+  /// No description provided for @wallpaperAdMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Would you like to watch a short video to set this masterpiece as your wallpaper?'**
+  String get wallpaperAdMessage;
 }
 
 class _AppLocalizationsDelegate

@@ -39,5 +39,15 @@
   "saveProgressMessage": "Would you like to save your progress before leaving?",
   "discard": "Discard",
   "progressSaved": "Progress saved!",
-  "selectLanguage": "Language"
+  "selectLanguage": "Language",
+  "lockedPage": "Locked Page",
+  "watchAdToUnlock": "Watch a short video to unlock this coloring page!",
+  "adDuration": "About 30 seconds · Unlock forever",
+  "watchAd": "Watch Ad",
+  "setAsWallpaper": "Set as Wallpaper",
+  "settingWallpaper": "Setting wallpaper...",
+  "wallpaperSetSuccess": "Wallpaper set successfully!",
+  "wallpaperSetError": "Failed to set wallpaper",
+  "wallpaperAdTitle": "Set as Wallpaper",
+  "wallpaperAdMessage": "Would you like to watch a short video to set this masterpiece as your wallpaper?"
 }

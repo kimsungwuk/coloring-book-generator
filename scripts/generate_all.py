@@ -9,7 +9,7 @@ count = 20
 
 def run_gen(cat):
     print(f"\n>>> Generating {cat}...")
-    subprocess.run(["python", "scripts/generate_images_gemini.py", cat, style, str(count)])
+    subprocess.run([sys.executable, "scripts/generate_images_gemini.py", cat, style, str(count)])
 
 if __name__ == "__main__":
     for cat in categories:

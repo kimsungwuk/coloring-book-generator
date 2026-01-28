@@ -47,5 +47,10 @@
 	<true/>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>We need access to your photo library to save your colored images.</string>
+	<!-- AdMob App ID for iOS -->
+	<!-- 🔧 릴리즈 빌드 시: 아래 테스트 ID를 프로덕션 ID로 변경하세요 -->
+	<!-- 프로덕션 ID: ca-app-pub-5003342395815276~8595229053 -->
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-3940256099942544~1458002511</string>
 </dict>
 </plist>

@@ -127,4 +127,34 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get selectLanguage => '언어';
+
+  @override
+  String get lockedPage => '잠긴 도안';
+
+  @override
+  String get watchAdToUnlock => '짧은 영상을 보고 이 도안을 잠금 해제하세요!';
+
+  @override
+  String get adDuration => '약 30초 · 영구 잠금 해제';
+
+  @override
+  String get watchAd => '광고 보기';
+
+  @override
+  String get setAsWallpaper => '배경화면 설정';
+
+  @override
+  String get settingWallpaper => '배경화면 설정 중...';
+
+  @override
+  String get wallpaperSetSuccess => '배경화면이 설정되었습니다!';
+
+  @override
+  String get wallpaperSetError => '배경화면 설정 실패';
+
+  @override
+  String get wallpaperAdTitle => '배경화면 설정';
+
+  @override
+  String get wallpaperAdMessage => '짧은 영상을 시청하고 이 멋진 작품을 배경화면으로 설정하시겠습니까?';
 }

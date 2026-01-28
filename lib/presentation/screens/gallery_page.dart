@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../core/services/page_unlock_service.dart';
 import '../../core/services/progress_save_service.dart';
+import '../../core/services/rewarded_ad_service.dart';
 import '../../l10n/app_localizations.dart';
 import '../../data/models/category_model.dart';
 import '../../data/models/coloring_page_model.dart';
@@ -22,23 +24,33 @@ class _GalleryPageState extends State<GalleryPage> {
   final ColoringRepository _repository = ColoringRepository();
   late Future<List<ColoringPageModel>> _pagesFuture;
   Map<String, bool> _progressStatus = {};
+  Map<String, bool> _unlockStatus = {};
 
   @override
   void initState() {
     super.initState();
     _pagesFuture = _repository.loadColoringPagesByCategory(widget.category.id);
-    _loadProgressStatus();
+    _loadStatuses();
+    // 보상형 광고 미리 로드
+    RewardedAdService.loadAd();
   }
 
-  Future<void> _loadProgressStatus() async {
+  Future<void> _loadStatuses() async {
     final pages = await _pagesFuture;
-    final Map<String, bool> status = {};
+    final Map<String, bool> progressStatus = {};
+    final List<String> pageIds = [];
+    
     for (final page in pages) {
-      status[page.id] = await ProgressSaveService.hasProgress(page.id);
+      progressStatus[page.id] = await ProgressSaveService.hasProgress(page.id);
+      pageIds.add(page.id);
     }
+    
+    final unlockStatus = await PageUnlockService.getUnlockStatus(pageIds);
+    
     if (mounted) {
       setState(() {
-        _progressStatus = status;
+        _progressStatus = progressStatus;
+        _unlockStatus = unlockStatus;
       });
     }
   }
@@ -118,10 +130,13 @@ class _GalleryPageState extends State<GalleryPage> {
                         itemBuilder: (context, index) {
                           final page = coloringPages[index];
                           final hasProgress = _progressStatus[page.id] ?? false;
+                          final isUnlocked = _unlockStatus[page.id] ?? false;
+                          
                           return _ColoringPageThumbnail(
                             page: page,
                             hasProgress: hasProgress,
-                            onTap: () => _navigateToColoringPage(context, page),
+                            isUnlocked: isUnlocked,
+                            onTap: () => _handlePageTap(context, page, isUnlocked),
                           );
                         },
                       );
@@ -139,6 +154,152 @@ class _GalleryPageState extends State<GalleryPage> {
     );
   }
 
+  /// 도안 탭 처리
+  Future<void> _handlePageTap(
+    BuildContext context,
+    ColoringPageModel page,
+    bool isUnlocked,
+  ) async {
+    if (isUnlocked) {
+      // 이미 잠금 해제된 도안 - 바로 열기
+      await _navigateToColoringPage(context, page);
+    } else {
+      // 잠긴 도안 - 광고 시청 다이얼로그 표시
+      _showUnlockDialog(context, page);
+    }
+  }
+
+  /// 잠금 해제 다이얼로그 표시
+  void _showUnlockDialog(BuildContext context, ColoringPageModel page) {
+    final l10n = AppLocalizations.of(context)!;
+    
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            Icon(Icons.lock_outline, color: Colors.amber.shade700),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                l10n.lockedPage,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l10n.watchAdToUnlock,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary.withAlpha(25),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.play_circle_filled, color: Colors.green.shade600),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      l10n.adDuration,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(l10n.cancel),
+          ),
+          ElevatedButton.icon(
+            onPressed: () async {
+              Navigator.pop(dialogContext);
+              await _watchAdAndUnlock(page);
+            },
+            icon: const Icon(Icons.play_arrow, size: 18),
+            label: Text(l10n.watchAd),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 광고 시청 후 도안 잠금 해제
+  Future<void> _watchAdAndUnlock(ColoringPageModel page) async {
+    // 로딩 표시
+    if (mounted) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+    
+    final success = await RewardedAdService.showAd(
+      onRewarded: () async {
+        // 잠금 해제 저장
+        await PageUnlockService.unlockPage(page.id);
+        
+        if (mounted) {
+          setState(() {
+            _unlockStatus[page.id] = true;
+          });
+        }
+      },
+      onAdDismissed: () {
+        // 로딩 다이얼로그 닫기
+        if (mounted) {
+          Navigator.of(context).pop();
+        }
+      },
+      onAdFailed: (error) {
+        // 로딩 다이얼로그 닫기
+        if (mounted) {
+          Navigator.of(context).pop();
+          
+          // 에러 메시지 표시
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(error),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      },
+    );
+    
+    // 광고 시청 완료 후 도안 열기
+    if (success && mounted) {
+      // 잠금 해제 후 약간의 딜레이
+      await Future.delayed(const Duration(milliseconds: 300));
+      if (mounted) {
+        await _navigateToColoringPage(context, page);
+      }
+    }
+  }
+
   Future<void> _navigateToColoringPage(
       BuildContext context, ColoringPageModel page) async {
     await Navigator.push(
@@ -148,7 +309,7 @@ class _GalleryPageState extends State<GalleryPage> {
       ),
     );
     // 돌아왔을 때 진행상황 상태 새로고침
-    _loadProgressStatus();
+    _loadStatuses();
   }
 }
 
@@ -156,11 +317,13 @@ class _GalleryPageState extends State<GalleryPage> {
 class _ColoringPageThumbnail extends StatelessWidget {
   final ColoringPageModel page;
   final bool hasProgress;
+  final bool isUnlocked;
   final VoidCallback onTap;
 
   const _ColoringPageThumbnail({
     required this.page,
     required this.hasProgress,
+    required this.isUnlocked,
     required this.onTap,
   });
 
@@ -204,8 +367,32 @@ class _ColoringPageThumbnail extends StatelessWidget {
                     ),
                   ),
                 ),
-                // 진행중 표시
-                if (hasProgress)
+                // 잠금 상태 오버레이
+                if (!isUnlocked)
+                  Positioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black.withAlpha(100),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Center(
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withAlpha(230),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.lock,
+                            color: Colors.amber.shade700,
+                            size: 28,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                // 진행중 표시 (잠금 해제된 경우에만)
+                if (hasProgress && isUnlocked)
                   Positioned(
                     top: 8,
                     right: 8,
@@ -246,36 +433,6 @@ class _ColoringPageThumbnail extends StatelessWidget {
                       ),
                     ),
                   ),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          Colors.black.withAlpha(128),
-                        ],
-                      ),
-                    ),
-                    child: Text(
-                      page.name,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
