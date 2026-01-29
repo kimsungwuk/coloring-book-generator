@@ -661,6 +661,13 @@
       "nameKey": "pageAhelpfulconstructioncraneliftingapuppy'sdoghouse",
       "imagePath": "assets/images/vehicles_20260129224138.png",
       "categoryId": "vehicles"
+    },
+    {
+      "id": "fairy_20260129020801",
+      "name": "Fairy 20260129020801",
+      "nameKey": "pageFairy20260129020801",
+      "imagePath": "assets/images/fairy_20260129020801.png",
+      "categoryId": "fairy"
     }
   ]
 }
