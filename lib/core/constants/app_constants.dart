@@ -58,13 +58,13 @@ class AppConstants {
   /// AdMob 콘솔에서 생성한 배너 광고 단위 ID를 여기에 입력하세요
   /// 형식: ca-app-pub-XXXXXXXXXXXXXXXX/YYYYYYYYYY
   static const String _productionBannerAdUnitId = 
-      'ca-app-pub-XXXXXXXXXXXXXXXX/YYYYYYYYYY'; // ← 여기에 실제 ID 입력
+      'ca-app-pub-5003342395815276/9615892601'; // ← 여기에 실제 ID 입력
   
   /// 프로덕션 보상형 광고 ID
   /// AdMob 콘솔에서 생성한 보상형 광고 단위 ID를 여기에 입력하세요
   /// 형식: ca-app-pub-XXXXXXXXXXXXXXXX/YYYYYYYYYY
   static const String _productionRewardedAdUnitId = 
-      'ca-app-pub-XXXXXXXXXXXXXXXX/YYYYYYYYYY'; // ← 여기에 실제 ID 입력
+      'ca-app-pub-5003342395815276/6906742866'; // ← 여기에 실제 ID 입력
 
   // ──────────────────────────────────────────────────────────────
   // 🧪 테스트 광고 ID (수정하지 마세요)

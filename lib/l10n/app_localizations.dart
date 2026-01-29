@@ -397,6 +397,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Would you like to watch a short video to set this masterpiece as your wallpaper?'**
   String get wallpaperAdMessage;
+
+  /// No description provided for @pickColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a Color'**
+  String get pickColor;
+
+  /// No description provided for @select.
+  ///
+  /// In en, this message translates to:
+  /// **'Select'**
+  String get select;
 }
 
 class _AppLocalizationsDelegate

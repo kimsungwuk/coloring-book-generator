@@ -162,4 +162,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get wallpaperAdMessage =>
       'Would you like to watch a short video to set this masterpiece as your wallpaper?';
+
+  @override
+  String get pickColor => 'Pick a Color';
+
+  @override
+  String get select => 'Select';
 }

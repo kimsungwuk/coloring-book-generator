@@ -49,5 +49,7 @@
   "wallpaperSetSuccess": "배경화면이 설정되었습니다!",
   "wallpaperSetError": "배경화면 설정 실패",
   "wallpaperAdTitle": "배경화면 설정",
-  "wallpaperAdMessage": "짧은 영상을 시청하고 이 멋진 작품을 배경화면으로 설정하시겠습니까?"
+  "wallpaperAdMessage": "짧은 영상을 시청하고 이 멋진 작품을 배경화면으로 설정하시겠습니까?",
+  "pickColor": "색상 선택",
+  "select": "선택"
 }

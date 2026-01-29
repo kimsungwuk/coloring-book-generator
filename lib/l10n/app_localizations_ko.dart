@@ -157,4 +157,10 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get wallpaperAdMessage => '짧은 영상을 시청하고 이 멋진 작품을 배경화면으로 설정하시겠습니까?';
+
+  @override
+  String get pickColor => '색상 선택';
+
+  @override
+  String get select => '선택';
 }

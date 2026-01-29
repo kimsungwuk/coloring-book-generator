@@ -36,10 +36,9 @@ def save_config(config):
 
 def apply_bw_postprocess(image_path: str, threshold_value: int = 200):
     """
-    이미지를 완벽한 흑백(이진화)으로 변환합니다.
-    - 회색 톤 제거
-    - 선명한 검정 선
-    - 순백 배경
+    이미지를 흑백(이진화)으로 변환합니다.
+    - 회색 톤 제거 및 선명한 선 확보
+    - 배경 반전 보정
     """
     try:
         # 이미지 로드
@@ -51,25 +50,23 @@ def apply_bw_postprocess(image_path: str, threshold_value: int = 200):
         # 그레이스케일 변환
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         
-        # 가벼운 블러로 노이즈 감소
-        gray = cv2.GaussianBlur(gray, (3, 3), 0)
-        
         # 이진화 (임계값 기반)
         _, binary = cv2.threshold(gray, threshold_value, 255, cv2.THRESH_BINARY)
         
-        # 배경이 어두운지 확인하고 필요시 반전
+        # 배경 반전 확인 및 보정
+        # 코너 픽셀들을 확인하여 배경이 검은색이면 반전
+        h, w = binary.shape
         corners = [binary[0, 0], binary[0, -1], binary[-1, 0], binary[-1, -1]]
         if np.mean(corners) < 128:
             binary = cv2.bitwise_not(binary)
-        
-        # 작은 노이즈 제거
+            
+        # 가벼운 노이즈 제거만 수행
         kernel = np.ones((2, 2), np.uint8)
-        binary = cv2.morphologyEx(binary, cv2.MORPH_CLOSE, kernel)
         binary = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel)
         
         # 저장 (원본 덮어쓰기)
         cv2.imwrite(image_path, binary)
-        print(f"  ✓ 흑백 변환 완료")
+        print(f"  ✓ 기본 흑백 변환 완료")
         return True
         
     except Exception as e:
@@ -221,7 +218,7 @@ def generate_coloring_pages(category_id, style, count, output_dir="assets/images
                 print(f"이미지 생성 실패 ({subject}): 모든 모델 시도 실패")
 
             # Quota 및 Timestamp 중복 방지
-            time.sleep(1.5)
+            time.sleep(5.0)
 
         except Exception as e:
             print(f"에러 발생 ({subject}): {e}")
