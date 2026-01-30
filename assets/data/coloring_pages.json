@@ -549,6 +549,13 @@
       "nameKey": "pageFairy20260129020801",
       "imagePath": "assets/images/fairy_20260129020801.png",
       "categoryId": "fairy"
+    },
+    {
+      "id": "ocean_20260130020827",
+      "name": "Octopus jamming on a coral drum set",
+      "nameKey": "pageOctopusjammingonacoraldrumset",
+      "imagePath": "assets/images/ocean_20260130020827.png",
+      "categoryId": "ocean"
     }
   ]
 }
