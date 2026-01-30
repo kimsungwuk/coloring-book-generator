@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import '../../core/services/settings_service.dart';
 import '../../data/models/category_model.dart';
@@ -57,36 +59,43 @@ class _MainHomePageState extends State<MainHomePage>
     final settings = Provider.of<SettingsService>(context);
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              colorScheme.primary.withAlpha(25),
-              colorScheme.secondary.withAlpha(40),
-              colorScheme.tertiary.withAlpha(30),
-            ],
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+        _showExitDialog(context);
+      },
+      child: Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                colorScheme.primary.withAlpha(25),
+                colorScheme.secondary.withAlpha(40),
+                colorScheme.tertiary.withAlpha(30),
+              ],
+            ),
           ),
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              // 상단 앱바
-              _buildAppBar(context, l10n, settings),
-              // 메인 컨텐츠
-              Expanded(
-                child: _isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : FadeTransition(
-                        opacity: _fadeAnimation,
-                        child: _buildContent(context, l10n),
-                      ),
-              ),
-              // 배너 광고
-              const BannerAdWidget(),
-            ],
+          child: SafeArea(
+            child: Column(
+              children: [
+                // 상단 앱바
+                _buildAppBar(context, l10n, settings),
+                // 메인 컨텐츠
+                Expanded(
+                  child: _isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : FadeTransition(
+                          opacity: _fadeAnimation,
+                          child: _buildContent(context, l10n),
+                        ),
+                ),
+                // 배너 광고
+                const BannerAdWidget(),
+              ],
+            ),
           ),
         ),
       ),
@@ -369,6 +378,40 @@ class _MainHomePageState extends State<MainHomePage>
           );
         },
         transitionDuration: const Duration(milliseconds: 300),
+      ),
+    );
+  }
+
+  /// 종료 확인 다이얼로그 표시
+  void _showExitDialog(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.exitTitle),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(l10n.exitMessage),
+            const SizedBox(height: 16),
+            // 광고 로딩 중 레이아웃 깨짐 방지를 위해 고정 높이 (50-60px)
+            const SizedBox(
+              height: 60,
+              child: BannerAdWidget(adSize: AdSize.banner),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(l10n.cancel),
+          ),
+          ElevatedButton(
+            onPressed: () => SystemNavigator.pop(),
+            child: Text(l10n.confirm),
+          ),
+        ],
       ),
     );
   }
