@@ -556,6 +556,13 @@
       "nameKey": "pageOctopusjammingonacoraldrumset",
       "imagePath": "assets/images/ocean_20260130020827.png",
       "categoryId": "ocean"
+    },
+    {
+      "id": "forest_20260131020410",
+      "name": "A tiny fox reading a worn book beside a spotted mushroom",
+      "nameKey": "pageAtinyfoxreadingawornbookbesideaspottedmushroom",
+      "imagePath": "assets/images/forest_20260131020410.png",
+      "categoryId": "forest"
     }
   ]
 }
