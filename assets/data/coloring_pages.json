@@ -563,6 +563,13 @@
       "nameKey": "pageAtinyfoxreadingawornbookbesideaspottedmushroom",
       "imagePath": "assets/images/forest_20260131020410.png",
       "categoryId": "forest"
+    },
+    {
+      "id": "desserts_20260201023300",
+      "name": "Fuzzy pink doughnut bounces on a cloud of fluffy frosting.",
+      "nameKey": "pageFuzzypinkdoughnutbouncesonacloudoffluffyfrosting.",
+      "imagePath": "assets/images/desserts_20260201023300.png",
+      "categoryId": "desserts"
     }
   ]
 }
