@@ -9,12 +9,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ImageSyncService {
   // GitHub 설정 - 자신의 저장소에 맞게 수정하세요
   static const String _githubUser = 'kimsungwuk';
-  static const String _githubRepo = 'coloring-book-generator';
+  static const String _githubRepo = 'number-coloring-book-assets';
   static const String _branch = 'main';
+  static const String _subDir = 'coloringbook';
   
-  // GitHub Raw URL 베이스
+  // GitHub Raw URL 베이스 (하위 디렉토리 포함)
   static String get _rawBaseUrl => 
-      'https://raw.githubusercontent.com/$_githubUser/$_githubRepo/$_branch';
+      'https://raw.githubusercontent.com/$_githubUser/$_githubRepo/$_branch/$_subDir';
   
   // 로컬 저장 경로 프리픽스
   static const String _localImagePrefix = 'synced_images';
@@ -34,7 +35,8 @@ class ImageSyncService {
   /// GitHub에서 최신 coloring_pages.json 가져오기
   Future<Map<String, dynamic>?> fetchRemoteConfig() async {
     try {
-      final url = '$_rawBaseUrl/assets/data/coloring_pages.json';
+      // JSON 위치 변경: jsondata/coloring_pages.json
+      final url = '$_rawBaseUrl/jsondata/coloring_pages.json';
       debugPrint('[ImageSync] Fetching remote config from: $url');
       
       final response = await http.get(Uri.parse(url)).timeout(

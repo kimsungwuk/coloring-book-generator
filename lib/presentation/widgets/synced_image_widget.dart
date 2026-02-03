@@ -39,20 +39,36 @@ class _SyncedImageWidgetState extends State<SyncedImageWidget> {
   @override
   void initState() {
     super.initState();
-    _checkLocalFile();
+    if (!_isNetworkImage()) {
+      _checkLocalFile();
+    } else {
+      _isLoading = false;
+    }
   }
 
   @override
   void didUpdateWidget(SyncedImageWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.assetPath != widget.assetPath) {
-      _checkLocalFile();
+      if (!_isNetworkImage()) {
+        _checkLocalFile();
+      } else {
+        setState(() {
+          _isLoading = false;
+          _useLocalFile = false;
+        });
+      }
     }
+  }
+
+  bool _isNetworkImage() {
+    return widget.assetPath.startsWith('http');
   }
 
   /// 로컬에 다운로드된 파일이 있는지 확인
   Future<void> _checkLocalFile() async {
     if (!mounted) return;
+    if (_isNetworkImage()) return;
     
     setState(() {
       _isLoading = true;
@@ -95,11 +111,26 @@ class _SyncedImageWidgetState extends State<SyncedImageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // 로딩 중에도 에셋 이미지를 먼저 표시 시도
-    // 실제 로딩 상태는 gaplessPlayback으로 처리
-    
+    if (_isNetworkImage()) {
+      return Image.network(
+        widget.assetPath,
+        fit: widget.fit,
+        width: widget.width,
+        height: widget.height,
+        gaplessPlayback: true,
+        errorBuilder: (context, error, stackTrace) {
+          debugPrint('Network load error for ${widget.assetPath}: $error');
+          return widget.errorWidget ?? _buildPlaceholder();
+        },
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) return child;
+          return widget.placeholder ?? _buildPlaceholder();
+        },
+      );
+    }
+
+    // 로컬 파일/에셋 처리
     if (_isLoading) {
-      // 로딩 중에도 에셋 이미지를 시도 (더 나은 UX)
       return _buildAssetImage();
     }
 
@@ -112,7 +143,6 @@ class _SyncedImageWidgetState extends State<SyncedImageWidget> {
         gaplessPlayback: true,
         errorBuilder: (context, error, stackTrace) {
           debugPrint('Local file load error: $error');
-          // 파일 로드 실패 시 에셋으로 폴백
           return _buildAssetImage();
         },
       );

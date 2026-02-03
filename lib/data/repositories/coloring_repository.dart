@@ -47,6 +47,7 @@ class ColoringRepository {
 
       return categoriesJson
           .map((data) => CategoryModel.fromJson(data as Map<String, dynamic>))
+          .where((category) => category.id != 'misc') // 'misc' 카테고리 강제 제외
           .toList();
     } catch (e) {
       debugPrint('Error loading categories: $e');
@@ -62,6 +63,7 @@ class ColoringRepository {
 
       return pagesJson
           .map((data) => ColoringPageModel.fromJson(data as Map<String, dynamic>))
+          .where((page) => page.categoryId != 'misc') // 'misc' 페이지 강제 제외
           .toList();
     } catch (e) {
       debugPrint('Error loading coloring pages: $e');
@@ -81,6 +83,11 @@ class ColoringRepository {
   /// 이미지 경로 해결 - 다운로드된 이미지 우선, 없으면 번들 에셋
   /// 반환값: (실제 경로, 파일인지 에셋인지)
   Future<(String path, bool isFile)> resolveImagePath(String assetPath) async {
+    // 네트워크 URL인 경우 바로 반환 (로컬 파일 체크 건너뜀)
+    if (assetPath.startsWith('http')) {
+      return (assetPath, false);
+    }
+
     // 로컬에 다운로드된 이미지가 있는지 확인
     final localPath = await _syncService.getLocalImagePath(assetPath);
     if (localPath != null) {

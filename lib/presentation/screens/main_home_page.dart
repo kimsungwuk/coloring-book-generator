@@ -439,7 +439,7 @@ class _CategoryCard extends StatelessWidget {
       case 'vehicles':
         return Icons.directions_car;
       case 'dinosaurs':
-        return Icons.vape_free; // 공룡 느낌의 아이콘이 없어서 대체
+        return Icons.landscape; // 공룡 시대 풍경
       case 'desserts':
         return Icons.cake;
       default:
